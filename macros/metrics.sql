@@ -9,7 +9,7 @@
 */
 
 {% macro get_metric_sql(metric, grain, dims, calcs, metric_name='metric_value') %}
-
+(
 with source_query as (
 
     select
@@ -130,7 +130,7 @@ select
 
 from with_calcs
 order by {{ range(1, (dims | length) + 1 + 1) | join (", ") }}
-
+)
 {% endmacro %}
 
 /* -------------------------------------------------- */
@@ -145,15 +145,31 @@ order by {{ range(1, (dims | length) + 1 + 1) | join (", ") }}
 {% macro metric(metric_name, by, grain) %}
     {% set def = get_metric(metric_name) %}
     {% set sql = get_metric_sql(
-        table = ref(def['table']),
-        aggregate = def['aggregate'],
-        expression = def['expression'],
-        datetime = def['datetime'],
+        metric = def,
+        metric_name = def['name'],
 
         grain = grain,
         dims = by
     ) %}
     {% do return(sql) %}
+{% endmacro %}
+
+
+{% macro get_metric(metric_name) %}
+    {% set metric_info = namespace(metric_id=none) %}
+    {% for metric in graph.metrics.values() %}
+        {% if metric.name == metric_name %}
+            {% set metric_info.metric_id = metric.unique_id %}
+        {% endif %}
+    {% endfor %}
+
+    {% if metric_info.metric_id is none %}
+        {% do exceptions.raise_compiler_error("Metric named '" ~ metric_name ~ "' not found") %}
+    {% endif %}
+    
+
+    {% do return(graph.metrics[metric_info.metric_id]) %}
+
 {% endmacro %}
 
 

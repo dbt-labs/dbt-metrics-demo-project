@@ -37,6 +37,7 @@ metrics:
     description: "Total number of orders"
     label: Total orders
     type: count
+    sql: order_id
     timestamp: created_at
     dimensions:
       - company

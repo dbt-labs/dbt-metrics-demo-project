@@ -17,11 +17,14 @@
     {% elif aggregate == 'count_distinct' %}
         {{ return(adapter.dispatch('metric_count_distinct')(expression)) }}
     
-    {% elif aggregate == 'average' %}
+    {% elif aggregate == 'avg' %}
         {{ return(adapter.dispatch('metric_average')(expression)) }}
     
     {% elif aggregate == 'max' %}
         {{ return(adapter.dispatch('metric_max')(expression)) }}
+
+    {% elif aggregate == 'sum' %}
+        {{ return(adapter.dispatch('metric_sum')(expression)) }}
     
     {% else %}
         {% do exceptions.raise_compiler_error("Unknown aggregation style: " ~ aggregate) %}  
@@ -42,6 +45,10 @@
 
 {% macro default__metric_max(expression) %}
     max({{ expression }})
+{% endmacro %}
+
+{% macro default__metric_sum(expression) %}
+    sum({{ expression }})
 {% endmacro %}
 
 -------------------------------------------------------------
