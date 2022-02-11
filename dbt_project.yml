@@ -5,6 +5,7 @@
 name: 'dbt_metrics_example_project'
 version: '1.0.0'
 config-version: 2
+require-dbt-version: [">=1.0.0", "<2.0.0"]
 
 # This setting configures which "profile" dbt uses for this project.
 profile: 'user'
