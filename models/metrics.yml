@@ -2,7 +2,7 @@
 version: 2
 
 metrics:
-  - model: fct_orders
+  - model: ref('fct_orders')
     name: revenue
     description: "Order revenue"
     label: Revenue
@@ -17,7 +17,7 @@ metrics:
       - week
       - month
 
-  - model: fct_orders
+  - model: ref('fct_orders')
     name: average_order_value
     description: "Average order Value"
     label: Average Order Value
@@ -32,7 +32,7 @@ metrics:
       - week
       - month
 
-  - model: fct_orders
+  - model: ref('fct_orders')
     name: orders
     description: "Total number of orders"
     label: Total orders
@@ -47,7 +47,7 @@ metrics:
       - week
       - month
 
-  - model: fct_orders
+  - model: ref('fct_orders')
     name: customers
     description: "Total distinct customers"
     label: Total customers
